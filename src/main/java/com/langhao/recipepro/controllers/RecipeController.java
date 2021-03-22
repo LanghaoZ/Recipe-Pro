@@ -30,6 +30,13 @@ public class RecipeController {
         return "recipe/recipeForm";
     }
 
+    @RequestMapping("/recipe/update/{id}")
+    public String newRecipe(@PathVariable String id, Model model) {
+        model.addAttribute("recipe", recipeService.findDtoById(Long.valueOf(id)));
+
+        return "recipe/recipeForm";
+    }
+
     @PostMapping
     @RequestMapping("recipe")
     public String saveOrUpdate(@ModelAttribute RecipeDto dto) {

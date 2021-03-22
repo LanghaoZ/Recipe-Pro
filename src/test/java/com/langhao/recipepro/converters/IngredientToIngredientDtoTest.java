@@ -50,8 +50,8 @@ public class IngredientToIngredientDtoTest {
 
         IngredientDto ingredientDto = converter.convert(ingredient);
         assertEquals(ID_VALUE, ingredientDto.getId());
-        assertNotNull(ingredientDto.getUnitOfMeasure());
-        assertEquals(UOM_ID, ingredientDto.getUnitOfMeasure().getId());
+        assertNotNull(ingredientDto.getUom());
+        assertEquals(UOM_ID, ingredientDto.getUom().getId());
         assertEquals(AMOUNT, ingredientDto.getAmount());
         assertEquals(DESCRIPTION, ingredientDto.getDescription());
     }
@@ -68,7 +68,7 @@ public class IngredientToIngredientDtoTest {
 
         IngredientDto ingredientDto = converter.convert(ingredient);
 
-        assertNull(ingredientDto.getUnitOfMeasure());
+        assertNull(ingredientDto.getUom());
         assertEquals(ID_VALUE, ingredientDto.getId());
         assertEquals(AMOUNT, ingredientDto.getAmount());
         assertEquals(DESCRIPTION, ingredientDto.getDescription());

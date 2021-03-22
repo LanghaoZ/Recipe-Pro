@@ -7,7 +7,7 @@ public class IngredientDto {
     private Long id;
     private String description;
     private BigDecimal amount;
-    private UnitOfMeasureDto unitOfMeasure;
+    private UnitOfMeasureDto uom;
 
     public Long getId() {
         return id;
@@ -33,11 +33,11 @@ public class IngredientDto {
         this.amount = amount;
     }
 
-    public UnitOfMeasureDto getUnitOfMeasure() {
-        return unitOfMeasure;
+    public UnitOfMeasureDto getUom() {
+        return uom;
     }
 
-    public void setUnitOfMeasure(UnitOfMeasureDto unitOfMeasure) {
-        this.unitOfMeasure = unitOfMeasure;
+    public void setUom(UnitOfMeasureDto uom) {
+        this.uom = uom;
     }
 }

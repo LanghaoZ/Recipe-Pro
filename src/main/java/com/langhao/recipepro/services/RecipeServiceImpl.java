@@ -55,4 +55,10 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe savedRecipe = recipeRepository.save(detachedRecipe);
         return recipeToRecipeDto.convert(savedRecipe);
     }
+
+    @Override
+    @Transactional
+    public RecipeDto findDtoById(Long id) {
+        return recipeToRecipeDto.convert(findById(id));
+    }
 }
