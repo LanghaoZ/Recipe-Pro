@@ -1,11 +1,14 @@
 package com.langhao.recipepro.services;
 
+import com.langhao.recipepro.converters.RecipeDtoToRecipe;
+import com.langhao.recipepro.converters.RecipeToRecipeDto;
 import com.langhao.recipepro.domain.Recipe;
 import com.langhao.recipepro.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -14,6 +17,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
 class RecipeServiceImplTest {
 
     RecipeServiceImpl recipeService;
@@ -21,11 +25,17 @@ class RecipeServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeDto recipeToRecipeDto;
+
+    @Mock
+    RecipeDtoToRecipe recipeDtoToRecipe;
+
     @BeforeEach
     public void init() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeToRecipeDto, recipeDtoToRecipe);
     }
 
     @Test
