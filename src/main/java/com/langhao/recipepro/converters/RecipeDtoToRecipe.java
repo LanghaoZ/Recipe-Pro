@@ -2,6 +2,7 @@ package com.langhao.recipepro.converters;
 
 import com.langhao.recipepro.domain.Recipe;
 import com.langhao.recipepro.dto.RecipeDto;
+import com.sun.istack.Nullable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ public class RecipeDtoToRecipe implements Converter<RecipeDto, Recipe> {
     }
 
     @Override
+    @Nullable
     public synchronized Recipe convert(RecipeDto source) {
         if (source == null) {
             return null;

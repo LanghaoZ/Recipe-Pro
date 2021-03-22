@@ -2,6 +2,7 @@ package com.langhao.recipepro.converters;
 
 import com.langhao.recipepro.domain.Ingredient;
 import com.langhao.recipepro.dto.IngredientDto;
+import com.sun.istack.Nullable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ public class IngredientToIngredientDto implements Converter<Ingredient, Ingredie
     }
 
     @Override
+    @Nullable
     public synchronized IngredientDto convert(Ingredient source) {
         if (source == null) {
             return null;

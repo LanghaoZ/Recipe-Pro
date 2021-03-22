@@ -2,6 +2,7 @@ package com.langhao.recipepro.converters;
 
 import com.langhao.recipepro.domain.Notes;
 import com.langhao.recipepro.dto.NotesDto;
+import com.sun.istack.Nullable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class NotesDtoToNotes implements Converter<NotesDto, Notes> {
 
     @Override
+    @Nullable
     public synchronized Notes convert(NotesDto source) {
         if (source == null) {
             return null;

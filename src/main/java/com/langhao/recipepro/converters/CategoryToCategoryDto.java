@@ -2,6 +2,7 @@ package com.langhao.recipepro.converters;
 
 import com.langhao.recipepro.domain.Category;
 import com.langhao.recipepro.dto.CategoryDto;
+import com.sun.istack.Nullable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class CategoryToCategoryDto implements Converter<Category, CategoryDto> {
 
     @Override
+    @Nullable
     public synchronized CategoryDto convert(Category source) {
         if (source == null) {
             return null;
