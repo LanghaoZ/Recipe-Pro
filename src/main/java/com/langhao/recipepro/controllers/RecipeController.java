@@ -1,10 +1,10 @@
 package com.langhao.recipepro.controllers;
 
+import com.langhao.recipepro.dto.RecipeDto;
 import com.langhao.recipepro.services.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RecipeController {
@@ -21,5 +21,20 @@ public class RecipeController {
         model.addAttribute("recipe", recipeService.findById(new Long(id)));
 
         return "recipe/recipeViewMain";
+    }
+
+    @RequestMapping("/recipe/new")
+    public String newRecipe(Model model) {
+        model.addAttribute("recipe", new RecipeDto());
+
+        return "recipe/recipeForm";
+    }
+
+    @PostMapping
+    @RequestMapping("recipe")
+    public String saveOrUpdate(@ModelAttribute RecipeDto dto) {
+        RecipeDto savedDto = recipeService.saveRecipeDto(dto);
+
+        return "redirect:/recipe/show/" + savedDto.getId();
     }
 }
