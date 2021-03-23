@@ -10,6 +10,7 @@ import com.langhao.recipepro.repositories.UnitOfMeasureRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -71,15 +72,51 @@ public class IngredientServiceImpl implements IngredientService {
                 ingredientFound.setAmount(dto.getAmount());
                 ingredientFound.setUom(unitOfMeasureRepository.findById(dto.getUom().getId()).orElseThrow(() -> new RuntimeException("UOM NOT FOUND")));
             } else {
-                recipe.addIngredient(ingredientDtoToIngredient.convert(dto));
+                Ingredient ingredient = ingredientDtoToIngredient.convert(dto);
+                ingredient.setRecipe(recipe);
+                recipe.addIngredient(ingredient);
             }
 
             Recipe savedRecipe = recipeRepository.save(recipe);
 
-            return ingredientToIngredientDto.convert(savedRecipe.getIngredients().stream()
-                            .filter(recipeIngredients -> recipeIngredients.getId().equals(dto.getId()))
-                            .findFirst().get());
-        }
+            Optional<Ingredient> savedIngredientOptional = savedRecipe.getIngredients().stream()
+                    .filter(recipeIngredient -> recipeIngredient.getId().equals(dto.getId()))
+                    .findFirst();
 
+            // Check by description. Above filters by ingredient id.
+            // But in case of CREATE, the ingredient does not yet have
+            // an id. Hence, we fall back to filter by description,
+            // amount nad UOM ID. This is not safe. Need to fix in future.
+            if (!savedIngredientOptional.isPresent()) {
+                savedIngredientOptional = savedRecipe.getIngredients().stream()
+                        .filter(recipeIngredient -> recipeIngredient.getDescription().equals(dto.getDescription()))
+                        .filter(recipeIngredient -> recipeIngredient.getAmount().equals(dto.getAmount()))
+                        .filter(recipeIngredient -> recipeIngredient.getUom().getId().equals(dto.getUom().getId()))
+                        .findFirst();
+            }
+
+            return ingredientToIngredientDto.convert(savedIngredientOptional.get());
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long recipeId, Long ingredientId) {
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+        if (recipeOptional.isPresent()) {
+            Recipe recipe = recipeOptional.get();
+            Optional<Ingredient> ingredientOptional = recipe.getIngredients().stream()
+                    .filter(ingredient -> ingredient.getId().equals(ingredientId))
+                    .findFirst();
+
+            if (ingredientOptional.isPresent()) {
+                Ingredient ingredientToDelete = ingredientOptional.get();
+                ingredientToDelete.setRecipe(null);
+                recipe.getIngredients().remove(ingredientOptional.get());
+                recipeRepository.save(recipe);
+            }
+        } else {
+            // TODO: Add logger
+        }
     }
 }

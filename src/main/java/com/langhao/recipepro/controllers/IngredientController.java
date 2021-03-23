@@ -1,6 +1,7 @@
 package com.langhao.recipepro.controllers;
 
 import com.langhao.recipepro.dto.IngredientDto;
+import com.langhao.recipepro.dto.UnitOfMeasureDto;
 import com.langhao.recipepro.services.IngredientService;
 import com.langhao.recipepro.services.RecipeService;
 import com.langhao.recipepro.services.UnitOfMeasureService;
@@ -40,6 +41,22 @@ public class IngredientController {
     }
 
     @GetMapping
+    @RequestMapping("recipe/{recipeId}/ingredient/new")
+    public String createIngredientInRecipe(@PathVariable String recipeId, Model model) {
+
+        // TODO: Add handler for invalid recipe id's.
+
+        IngredientDto ingredientDto = new IngredientDto();
+        ingredientDto.setRecipeId(Long.valueOf(recipeId));
+        ingredientDto.setUom(new UnitOfMeasureDto());
+
+        model.addAttribute("ingredient", ingredientDto);
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
+
+        return "recipe/ingredient/ingredientForm";
+    }
+
+    @GetMapping
     @RequestMapping("recipe/{recipeId}/ingredient/{id}/update")
     public String updateIngredientInRecipe(@PathVariable String recipeId, @PathVariable String id, Model model) {
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
@@ -54,5 +71,13 @@ public class IngredientController {
         IngredientDto savedDto = ingredientService.saveIngredientDto(dto);
 
         return "redirect:/recipe/" + savedDto.getRecipeId() + "/ingredient/" + savedDto.getId() + "/show";
+    }
+
+    @GetMapping
+    @RequestMapping("recipe/{recipeId}/ingredient/{id}/delete")
+    public String deleteIngredientInRecipe(@PathVariable String recipeId, @PathVariable String id) {
+        ingredientService.deleteById(Long.valueOf(recipeId), Long.valueOf(id));
+
+        return "redirect:/recipe/" + recipeId + "/ingredients";
     }
 }
