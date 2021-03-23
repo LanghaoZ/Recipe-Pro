@@ -7,16 +7,13 @@ import com.langhao.recipepro.converters.UnitOfMeasureToUnitOfMeasureDto;
 import com.langhao.recipepro.domain.Ingredient;
 import com.langhao.recipepro.domain.Recipe;
 import com.langhao.recipepro.dto.IngredientDto;
-import com.langhao.recipepro.dto.UnitOfMeasureDto;
 import com.langhao.recipepro.repositories.RecipeRepository;
 import com.langhao.recipepro.repositories.UnitOfMeasureRepository;
-import org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
