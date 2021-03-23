@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class IngredientDto {
 
     private Long id;
+    private Long recipeId;
     private String description;
     private BigDecimal amount;
     private UnitOfMeasureDto uom;
@@ -15,6 +16,14 @@ public class IngredientDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(Long recipeId) {
+        this.recipeId = recipeId;
     }
 
     public String getDescription() {
