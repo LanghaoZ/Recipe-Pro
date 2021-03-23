@@ -39,7 +39,7 @@ class RecipeServiceImplTest {
     }
 
     @Test
-    void getRecipes() {
+    void testGetRecipes() {
 
         Recipe recipe = new Recipe();
         HashSet recipesData = new HashSet();
@@ -54,7 +54,7 @@ class RecipeServiceImplTest {
     }
 
     @Test
-    public void getRecipeByIdTest() throws Exception {
+    public void testGetRecipeById() throws Exception {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
         Optional<Recipe> recipeOptional = Optional.of(recipe);
@@ -66,6 +66,14 @@ class RecipeServiceImplTest {
         assertNotNull(recipeReturned);
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
+    }
+
+    @Test
+    public void testDeleteById() throws Exception {
+        Long deleteInstanceId = Long.valueOf(2L);
+        recipeService.deleteById(deleteInstanceId);
+
+        verify(recipeRepository, times(1)).deleteById(anyLong());
     }
 
 }
