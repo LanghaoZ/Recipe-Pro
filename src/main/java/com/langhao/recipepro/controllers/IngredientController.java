@@ -24,24 +24,21 @@ public class IngredientController {
         this.unitOfMeasureService = unitOfMeasureService;
     }
 
-    @GetMapping
-    @RequestMapping("/recipe/{recipeId}/ingredients")
+    @GetMapping("/recipe/{recipeId}/ingredients")
     public String listIngredients(@PathVariable String recipeId, Model model) {
         model.addAttribute("recipe", recipeService.findDtoById(Long.valueOf(recipeId)));
 
         return "recipe/ingredient/list";
     }
 
-    @GetMapping
-    @RequestMapping("recipe/{recipeId}/ingredient/{id}/show")
+    @GetMapping("recipe/{recipeId}/ingredient/{id}/show")
     public String showIngredient(@PathVariable String recipeId, @PathVariable String id, Model model) {
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
 
         return "recipe/ingredient/show";
     }
 
-    @GetMapping
-    @RequestMapping("recipe/{recipeId}/ingredient/new")
+    @GetMapping("recipe/{recipeId}/ingredient/new")
     public String createIngredientInRecipe(@PathVariable String recipeId, Model model) {
 
         // TODO: Add handler for invalid recipe id's.
@@ -56,8 +53,7 @@ public class IngredientController {
         return "recipe/ingredient/ingredientForm";
     }
 
-    @GetMapping
-    @RequestMapping("recipe/{recipeId}/ingredient/{id}/update")
+    @GetMapping("recipe/{recipeId}/ingredient/{id}/update")
     public String updateIngredientInRecipe(@PathVariable String recipeId, @PathVariable String id, Model model) {
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
         model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
@@ -65,16 +61,14 @@ public class IngredientController {
         return "recipe/ingredient/ingredientForm";
     }
 
-    @PostMapping
-    @RequestMapping("recipe/{recipeId}/ingredient")
+    @PostMapping("recipe/{recipeId}/ingredient")
     public String saveOrUpdate(@ModelAttribute IngredientDto dto) {
         IngredientDto savedDto = ingredientService.saveIngredientDto(dto);
 
         return "redirect:/recipe/" + savedDto.getRecipeId() + "/ingredient/" + savedDto.getId() + "/show";
     }
 
-    @GetMapping
-    @RequestMapping("recipe/{recipeId}/ingredient/{id}/delete")
+    @GetMapping("recipe/{recipeId}/ingredient/{id}/delete")
     public String deleteIngredientInRecipe(@PathVariable String recipeId, @PathVariable String id) {
         ingredientService.deleteById(Long.valueOf(recipeId), Long.valueOf(id));
 
