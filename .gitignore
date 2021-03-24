@@ -30,3 +30,9 @@ build/
 ### VS Code ###
 .vscode/
 /src/main/resources/static/images/*
+
+### OS Generated Files ###
+.DS_Store
+.DS_Store?
+Thumbs.db
+.Trashes
