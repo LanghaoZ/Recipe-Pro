@@ -2,6 +2,7 @@ package com.langhao.recipepro.controllers;
 
 import com.langhao.recipepro.domain.Recipe;
 import com.langhao.recipepro.dto.RecipeDto;
+import com.langhao.recipepro.exceptions.NotFoundException;
 import com.langhao.recipepro.services.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,25 @@ public class RecipeControllerTest {
         MockitoAnnotations.initMocks(this);
 
         controller = new RecipeController(recipeService);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                    .setControllerAdvice(new ControllerExceptionHandler())
+                    .build();
+    }
+
+    @Test
+    public void testGetRecipeNotFound() throws Exception {
+        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/recipe/show/1"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404Error"));
+    }
+
+    @Test
+    public void testGetRecipeExceptionNumberFormat() throws Exception {
+        mockMvc.perform(get("/recipe/show/notanumber"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400Error"));
     }
 
     @Test
@@ -50,8 +69,6 @@ public class RecipeControllerTest {
 
     @Test
     public void testNewRecipeGet() throws Exception {
-        RecipeDto recipeDto = new RecipeDto();
-
         mockMvc.perform(get("/recipe/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/recipeForm"))
@@ -65,7 +82,10 @@ public class RecipeControllerTest {
 
         when(recipeService.saveRecipeDto(any())).thenReturn(recipeDto);
 
-        mockMvc.perform(post("/recipe").contentType(MediaType.APPLICATION_FORM_URLENCODED))
+        mockMvc.perform(post("/recipe").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                                                    .param("id", "")
+                                                    .param("description", "some description")
+                                                    .param("directions", "some directions"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/show/2"));
     }

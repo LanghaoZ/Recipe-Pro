@@ -4,6 +4,7 @@ import com.langhao.recipepro.converters.RecipeDtoToRecipe;
 import com.langhao.recipepro.converters.RecipeToRecipeDto;
 import com.langhao.recipepro.domain.Recipe;
 import com.langhao.recipepro.dto.RecipeDto;
+import com.langhao.recipepro.exceptions.NotFoundException;
 import com.langhao.recipepro.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,12 +37,13 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe findById(Long l) {
+    public Recipe findById(Long id) {
 
-        Optional<Recipe> recipeOptional = recipeRepository.findById(l);
+        Optional<Recipe> recipeOptional = recipeRepository.findById(id);
 
         if (!recipeOptional.isPresent()) {
-            throw new RuntimeException("Recipe Not Found!");
+            throw new NotFoundException("Recipe Not Found: recipe with id " +
+                    id.toString() + " does not exist.");
         }
 
         return recipeOptional.get();

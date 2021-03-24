@@ -3,7 +3,9 @@ package com.langhao.recipepro.services;
 import com.langhao.recipepro.converters.RecipeDtoToRecipe;
 import com.langhao.recipepro.converters.RecipeToRecipeDto;
 import com.langhao.recipepro.domain.Recipe;
+import com.langhao.recipepro.exceptions.NotFoundException;
 import com.langhao.recipepro.repositories.RecipeRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -51,6 +53,15 @@ class RecipeServiceImplTest {
 
         assertEquals(recipes.size(), 1);
         verify(recipeRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void testGetRecipeByIdNotFound() throws Exception {
+        Optional<Recipe> recipeOptional = Optional.empty();
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            recipeService.findById(1L);
+        });
     }
 
     @Test
