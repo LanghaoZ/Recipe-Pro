@@ -2,6 +2,7 @@ package com.langhao.recipepro.dto;
 
 import com.langhao.recipepro.domain.Difficulty;
 
+import javax.persistence.Lob;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +16,9 @@ public class RecipeDto {
     private String source;
     private String url;
     private String directions;
+
+    @Lob
+    private Byte[] image;
     private Set<IngredientDto> ingredients = new HashSet<>();
     private Set<CategoryDto> categories = new HashSet<>();
     private Difficulty difficulty;
@@ -82,6 +86,14 @@ public class RecipeDto {
 
     public void setDirections(String directions) {
         this.directions = directions;
+    }
+
+    public Byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(Byte[] image) {
+        this.image = image;
     }
 
     public Set<IngredientDto> getIngredients() {
